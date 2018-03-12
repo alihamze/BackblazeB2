@@ -107,18 +107,56 @@
 		
 		/**
 		 * @param $name
+		 * @param array $options
 		 * @return null|File
 		 * @throws \Exception
 		 */
-		public function getFileByName($name) {
-			if (empty($this->files))
-				$this->listFileNames();
+		public function getFileByName($name, $options = []) {
+			if (!empty($this->files)) {
+				foreach ($this->files as $file) {
+					if ($file->getName() === $name)
+						return $file;
+				}
+			}
 			
-			foreach ($this->files as $file) {
-				if ($file->getName() === $name)
-					return $file;
+			$response = $this->client->getHttpClient()
+									 ->request('POST', $this->client->urlForEndpoint('b2_list_file_names'), [
+										 'headers' => [
+											 'Authorization' => $this->client->getAuthorizationToken(),
+										 ],
+										 'json'    => array_merge($options, [
+											 'bucketId'      => $this->id,
+											 'startFileName' => $name,
+											 'maxFileCount'  => 1,
+										 ]),
+									 ]);
+			$files = $response['files'];
+			if (count($files) === 1) {
+				$file = $files[0];
+				
+				return new File($file['fileId'], $this, $file['fileName'], $file['fileInfo'],
+								$file['contentType'], $file['contentSha1'], $file['contentLength'],
+								$file['action'], $file['uploadTimestamp']);
 			}
 			
 			return null;
+		}
+		
+		/**
+		 * @param $name
+		 * @return bool
+		 * @throws \Exception
+		 */
+		public function fileExists($name) {
+			if (!empty($this->files)) {
+				foreach ($this->files as $file) {
+					if ($file->getName() === $name)
+						return true;
+				}
+				
+				return false;
+			} else {
+				return !empty($this->getFileByName($name));
+			}
 		}
 	}
