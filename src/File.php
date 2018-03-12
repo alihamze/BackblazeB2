@@ -130,4 +130,30 @@
 			
 			return !empty($sink) ? true : $response;
 		}
+		
+		/**
+		 * @param array $options
+		 * @return string
+		 * @throws \Exception
+		 */
+		public function getDownloadAuthorization($options = []) {
+			$url = $this->bucket->getClient()->urlForEndpoint('b2_get_download_authorization');
+			
+			$options = array_merge([
+									   'validDurationInSeconds' => 86400,
+								   ], $options);
+			
+			$response = $this->bucket->getClient()->getHttpClient()->request('POST', $url, [
+				'Headers' => [
+					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
+				],
+				'json'    => [
+					'bucketId'               => $this->bucket->getId(),
+					'validDurationInSeconds' => $options['validDurationInSeconds'],
+					'fileNamePrefix'         => $this->getName(),
+				],
+			]);
+			
+			return $response['authorizationToken'];
+		}
 	}
