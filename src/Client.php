@@ -34,11 +34,16 @@
 			$this->accountId = $accountId;
 			$this->applicationKey = $applicationKey;
 			
-			$config = array_merge($config, [
-				'exceptions' => false,
-			]);
+			if (!isset($config['client'])) {
+				$config = array_merge($config, [
+					'exceptions' => false,
+				]);
+				
+				$this->client = new HttpClient($config);
+			} else {
+				$this->client = $config['client'];
+			}
 			
-			$this->client = new HttpClient($config);
 			$this->authorizeAccount();
 		}
 		
