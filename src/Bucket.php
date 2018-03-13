@@ -175,6 +175,30 @@
 		}
 		
 		/**
+		 * @throws \Exception
+		 * @return array
+		 */
+		public function getUploadUrl() {
+			$url = $this->client->urlForEndpoint('b2_get_upload_url');
+			
+			$options = [
+				'Headers' => [
+					'Authorization' => $this->getClient()->getAuthorizationToken(),
+				],
+				'json'    => [
+					'bucketId' => $this->id,
+				],
+			];
+			
+			$response = $this->getClient()->getHttpClient()->request('POST', $url, $options);
+			
+			return [
+				'uploadUrl'          => $response['uploadUrl'],
+				'authorizationToken' => $response['authorizationToken'],
+			];
+		}
+		
+		/**
 		 * @param $name
 		 * @return bool
 		 * @throws \Exception

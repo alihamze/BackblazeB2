@@ -54,7 +54,7 @@ $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthoriza
 - [ ] b2_finish_large_file
 - [ ] b2_get_file_info
 - [ ] b2_get_upload_part_url
-- [ ] b2_get_upload_url
+- [x] b2_get_upload_url
 - [ ] b2_hide_file
 - [x] b2_list_buckets
 - [x] b2_list_file_names
