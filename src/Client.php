@@ -106,25 +106,6 @@
 		}
 		
 		/**
-		 * @param $bucketName
-		 * @param array $options
-		 * @return File[]
-		 * @throws \Exception
-		 */
-		public function listFileNames($bucketName, $options = []) {
-			if (!empty($this->buckets[$bucketName])) {
-				$this->listBuckets();
-				if (!isset($this->buckets[$bucketName])) {
-					throw new B2Exception('Could not find the requested bucket');
-				}
-			}
-			
-			$bucket = $this->buckets[$bucketName];
-			
-			return $bucket->listFileNames($options);
-		}
-		
-		/**
 		 * @return mixed
 		 */
 		public function getAuthorizationToken() {
