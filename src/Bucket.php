@@ -155,7 +155,7 @@
 			unset($options['SaveAs']);
 			
 			$options = array_merge($options, [
-				'Headers' => [
+				'headers' => [
 					'Authorization' => $this->getClient()->getAuthorizationToken(),
 				],
 				'sink'    => $sink,
@@ -182,7 +182,7 @@
 			$url = $this->client->urlForEndpoint('b2_get_upload_url');
 			
 			$options = [
-				'Headers' => [
+				'headers' => [
 					'Authorization' => $this->getClient()->getAuthorizationToken(),
 				],
 				'json'    => [

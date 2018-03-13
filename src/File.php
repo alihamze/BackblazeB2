@@ -120,7 +120,7 @@
 			unset($options['SaveAs']);
 			
 			$options = array_merge($options, [
-				'Headers' => [
+				'headers' => [
 					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
 				],
 				'sink'    => $sink,
@@ -144,7 +144,7 @@
 								   ], $options);
 			
 			$response = $this->bucket->getClient()->getHttpClient()->request('POST', $url, [
-				'Headers' => [
+				'headers' => [
 					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
 				],
 				'json'    => [
@@ -164,7 +164,7 @@
 			$url = $this->bucket->getClient()->urlForEndpoint('b2_delete_file_version');
 			
 			$this->bucket->getClient()->getHttpClient()->request('POST', $url, [
-				'Headers' => [
+				'headers' => [
 					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
 				],
 				'json'    => [
