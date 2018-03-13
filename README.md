@@ -15,16 +15,24 @@ $files = $buckets['testBucket']->listFileNames();
 //Returns a File object
 $file = $buckets['testBucket']->getFileByName('test.txt');
 
-//Returns a boolean value
-$exists = $buckets['testBucket']->fileExists('test.txt');
-
 //Returns the file contents
-$file = $buckets['testBucket']->getFileByName('test.txt')->download();
+$content = $file->download();
+
+//Also returns the file contents
+$content = $buckets['testBucket']->downloadFileByName('test.txt');
 
 //Saves the file to disk and returns a success boolean
-$success = $buckets['testBucket']->getFileByName('test.txt')->download([
+$success = $file->download([
     'SaveAs' => '/path/to/save/location',
 ]);
+
+//Also saves the file to disk and returns a success boolean
+$file = $buckets['testBucket']->downloadFileByName('test.txt', [
+    'SaveAs' => '/path/to/save/location',
+]);
+
+//Returns a boolean value
+$exists = $buckets['testBucket']->fileExists('test.txt');
 
 //Returns a string containing the authorization token
 $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthorization([
@@ -41,9 +49,7 @@ $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthoriza
 - [ ] b2_delete_file_version
 - [ ] b2_delete_key
 - [x] b2_download_file_by_id
-- [ ] b2_download_file_by_name
-    - This is partially available. Must first retrieve the file using `getFileByName()` 
-    and then download using the returned File object. This uses b2_download_file_by_id.
+- [x] b2_download_file_by_name
 - [x] b2_get_download_authorization
 - [ ] b2_finish_large_file
 - [ ] b2_get_file_info
