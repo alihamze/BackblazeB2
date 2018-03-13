@@ -38,6 +38,11 @@ $exists = $buckets['testBucket']->fileExists('test.txt');
 $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthorization([
     'validDurationInSeconds' => 86400,
 ]);
+
+//Returns a file object
+$file = $buckets['testBucket']->uploadFile('test.txt.', 'This is a test');
+//You can also pass a file resource
+$file = $buckets['testBucket']->uploadFile('test.txt.', fopen('/path/to/input', 'r'));
 ```
 
 # API Endpoints
@@ -64,5 +69,5 @@ $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthoriza
 - [ ] b2_list_unfinished_large_files
 - [ ] b2_start_large_file
 - [ ] b2_update_bucket
-- [ ] b2_upload_file
+- [x] b2_upload_file
 - [ ] b2_upload_part

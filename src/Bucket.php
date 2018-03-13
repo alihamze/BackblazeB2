@@ -200,6 +200,70 @@
 		
 		/**
 		 * @param $name
+		 * @param $file
+		 * @param array $options
+		 * @return File
+		 * @throws \Exception
+		 */
+		public function uploadFile($name, $file, $options = []) {
+			$hash = null;
+			$size = null;
+			$modificationTime = null;
+			$contentType = 'b2/x-auto';
+			
+			if (is_resource($file)) {
+				//Calculate sha1 hash & files size
+				$context = hash_init('sha1');
+				hash_update_stream($context, $file);
+				$hash = hash_final($context);
+				$stats = fstat($file);
+				$size = $stats['size'];
+				$modificationTime = $stats['mtime'];
+				rewind($file);
+			} else {
+				$hash = sha1($file);
+				$size = strlen($file);
+			}
+			
+			if (isset($options['ModificationTime']))
+				$modificationTime = $options['ModificationTime'];
+			if (isset($options['ContentType']))
+				$contentType = $options['ContentType'];
+			
+			if (empty($modificationTime))
+				$modificationTime = round(microtime(true) * 1000);
+			
+			//Get upload details
+			$uploadDetails = $this->getUploadUrl();
+			
+			$clientOptions = [
+				'headers' => [
+					'Authorization' => $uploadDetails['authorizationToken'],
+					'X-Bz-File-Name' => rawurlencode($name),
+					'Content-Type' => $contentType,
+					'Content-Length' => $size,
+					'X-Bz-Content-Sha1' => $hash,
+					'X-Bz-Info-src_last_modified_millis' => $modificationTime,
+				],
+				'body' => $file,
+			];
+			
+			//Add custom headers
+			if (isset($options['Custom'])) {
+				foreach ($options['Custom'] as $key => $value) {
+					$clientOptions['headers'][sprintf('X-Bz-Info-%s', $key)] = rawurlencode($value);
+				}
+			}
+			
+			$response = $this->client->getHttpClient()->request('POST', $uploadDetails['uploadUrl'], $clientOptions);
+			
+			return new File($response['fileId'], $this, $response['fileName'], $response['fileInfo'],
+							$response['contentType'], $response['contentSha1'], $response['contentLength'],
+							$response['action'], $response['uploadTimestamp']);
+		}
+		
+		/**
+		 * @param $name
 		 * @return bool
 		 * @throws \Exception
 		 */
