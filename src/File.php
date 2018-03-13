@@ -156,4 +156,23 @@
 			
 			return $response['authorizationToken'];
 		}
+		
+		/**
+		 * @throws \Exception
+		 */
+		public function delete() {
+			$url = $this->bucket->getClient()->urlForEndpoint('b2_delete_file_version');
+			
+			$this->bucket->getClient()->getHttpClient()->request('POST', $url, [
+				'Headers' => [
+					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
+				],
+				'json'    => [
+					'fileName' => $this->name,
+					'fileId'   => $this->id,
+				],
+			]);
+			
+			return true;
+		}
 	}

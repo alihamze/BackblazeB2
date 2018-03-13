@@ -34,6 +34,9 @@ $file = $buckets['testBucket']->downloadFileByName('test.txt', [
 //Returns a boolean value
 $exists = $buckets['testBucket']->fileExists('test.txt');
 
+//Returns a boolean value
+$deleted = $buckets['testBucket']->getFileByName('test.txt')->delete();
+
 //Returns a string containing the authorization token
 $token = $buckets['testBucket']->getFileByName('test.txt')->getDownloadAuthorization([
     'validDurationInSeconds' => 86400,
@@ -52,7 +55,7 @@ $file = $buckets['testBucket']->uploadFile('test.txt.', fopen('/path/to/input', 
 - [ ] b2_create_key
 - [ ] b2_delete_bucket
 - [ ] b2_delete_file_version
-- [ ] b2_delete_key
+- [x] b2_delete_key
 - [x] b2_download_file_by_id
 - [x] b2_download_file_by_name
 - [x] b2_get_download_authorization
