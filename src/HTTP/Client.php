@@ -23,13 +23,14 @@
 		 * @param string $uri
 		 * @param array $options
 		 * @param bool $parseJson
+		 * @param int $successStatusCode
 		 * @return mixed|\Psr\Http\Message\StreamInterface
 		 * @throws \Exception
 		 */
-		public function request($method, $uri = '', array $options = [], $parseJson = true) {
+		public function request($method, $uri = '', array $options = [], $parseJson = true, $successStatusCode = 200) {
 			/** @var ResponseInterface $response */
 			$response = parent::request($method, $uri, $options);
-			if ($response->getStatusCode() !== 200) {
+			if ($response->getStatusCode() !== $successStatusCode) {
 				return $this->handleError($response);
 			}
 			

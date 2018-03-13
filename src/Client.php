@@ -8,8 +8,6 @@
 	
 	namespace TechYet\B2;
 	
-	
-	use TechYet\B2\Exceptions\B2Exception;
 	use TechYet\B2\HTTP\Client as HttpClient;
 	
 	class Client {
@@ -110,5 +108,12 @@
 		 */
 		public function getAuthorizationToken() {
 			return $this->authorizationToken;
+		}
+		
+		/**
+		 * @return string
+		 */
+		public function getDownloadUrl() {
+			return $this->downloadUrl;
 		}
 	}

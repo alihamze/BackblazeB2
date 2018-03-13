@@ -144,6 +144,38 @@
 		
 		/**
 		 * @param $name
+		 * @param array $options
+		 * @return bool|mixed|\Psr\Http\Message\StreamInterface
+		 * @throws \Exception
+		 */
+		public function downloadFileByName($name, $options = []) {
+			$url = sprintf('%s/file/%s/%s', $this->client->getDownloadUrl(), $this->name, $name);
+			
+			$sink = isset($options['SaveAs']) ? $options['SaveAs'] : null;
+			unset($options['SaveAs']);
+			
+			$options = array_merge($options, [
+				'Headers' => [
+					'Authorization' => $this->getClient()->getAuthorizationToken(),
+				],
+				'sink'    => $sink,
+			]);
+			
+			$successStatusCode = 200;
+			
+			if (isset($options['Range'])) {
+				$successStatusCode = 206;
+				$options['Headers']['Range'] = $options['Range'];
+				unset($options['Range']);
+			}
+			
+			$response = $this->getClient()->getHttpClient()->request('GET', $url, $options, false, $successStatusCode);
+			
+			return !empty($sink) ? true : $response;
+		}
+		
+		/**
+		 * @param $name
 		 * @return bool
 		 * @throws \Exception
 		 */
