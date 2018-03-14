@@ -73,9 +73,9 @@
 		 */
 		public function urlForEndpoint($endpoint) {
 			if ($endpoint === 'b2_download_file_by_id')
-				return sprintf('%s/%s', $this->downloadUrl, $endpoint);
+				return sprintf('%s/b2api/v1/%s', $this->downloadUrl, $endpoint);
 			
-			return sprintf('%s/%s', $this->apiUrl, $endpoint);
+			return sprintf('%s/b2api/v1/%s', $this->apiUrl, $endpoint);
 		}
 		
 		/**
