@@ -134,7 +134,8 @@
 			if (count($files) === 1) {
 				$file = $files[0];
 				
-				return new File($file['fileId'], $this, $file['fileName'], $file['fileInfo'],
+				if ($file['fileName'] === $name)
+					return new File($file['fileId'], $this, $file['fileName'], $file['fileInfo'],
 								$file['contentType'], $file['contentSha1'], $file['contentLength'],
 								$file['action'], $file['uploadTimestamp']);
 			}
