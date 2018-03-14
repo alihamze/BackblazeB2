@@ -38,7 +38,7 @@
 				return json_decode($response->getBody(), true);
 			}
 			
-			return $response->getBody();
+			return $response->getBody()->getContents();
 		}
 		
 		/**
