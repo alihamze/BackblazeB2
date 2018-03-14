@@ -124,7 +124,7 @@
 					'Authorization' => $this->bucket->getClient()->getAuthorizationToken(),
 				],
 				'sink'    => $sink,
-				'json'    => [
+				'query'   => [
 					'fileId' => $this->id,
 				],
 			]);
