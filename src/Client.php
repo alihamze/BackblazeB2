@@ -16,6 +16,7 @@
 		protected $apiUrl;
 		protected $downloadUrl;
 		protected $authorizationToken;
+		/** @var HttpClient */
 		protected $client;
 		
 		/** @var Bucket[] */
@@ -37,12 +38,16 @@
 					'exceptions' => false,
 				]);
 				
-				$this->client = new HttpClient($config);
+				$this->client = new HttpClient($config, $this);
 			} else {
 				$this->client = $config['client'];
 			}
 			
 			$this->authorizeAccount();
+		}
+		
+		public function getNewAccountAuthorization() {
+		
 		}
 		
 		/**
